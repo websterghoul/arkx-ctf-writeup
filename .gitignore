@@ -1,0 +1,18 @@
+# Working directory: session cookies, captured transcripts, scratch scripts.
+.work/
+
+# Locally installed tooling (gh CLI, etc.)
+.local/
+
+# Dependencies
+node_modules/
+
+# Secrets
+posts/.linkedin_token
+.env
+.env.*
+
+# OS / editor noise
+.DS_Store
+Thumbs.db
+*.log
