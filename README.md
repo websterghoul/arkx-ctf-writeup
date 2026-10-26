@@ -51,7 +51,6 @@ The set is not really about jailbreaking a model. The winning move was almost al
 | Path | What it is |
 | --- | --- |
 | [`report/AI_Agent_MCP_Security_Verified_Vulnerability_Report.pdf`](report/AI_Agent_MCP_Security_Verified_Vulnerability_Report.pdf) | Consolidated vulnerability report — findings, severity, mappings (PDF) |
-| [`report/AI_Agent_MCP_Security_Verified_Vulnerability_Report.docx`](report/AI_Agent_MCP_Security_Verified_Vulnerability_Report.docx) | Same report, editable |
 | [`report/ARKX_AI_Agent_Security_CTF_Solution_Report.pdf`](report/ARKX_AI_Agent_Security_CTF_Solution_Report.pdf) | Level-by-level solution report |
 | [`report/full_report.html`](report/full_report.html) | Long-form report with screenshots and payload tables |
 | [`report/report.html`](report/report.html) | Single-file HTML report |
@@ -59,10 +58,9 @@ The set is not really about jailbreaking a model. The winning move was almost al
 | [`report/payloads_by_vulnerability.md`](report/payloads_by_vulnerability.md) | Same payloads indexed by vulnerability class |
 | [`report/exploit_L7_master_of_resources.md`](report/exploit_L7_master_of_resources.md) | Deep dive: MCP server exposure (Level 7) |
 | [`report/L7_rpc_table.md`](report/L7_rpc_table.md), [`report/L7_rpc_table_live.md`](report/L7_rpc_table_live.md) | MCP JSON-RPC request/response table, incl. a live capture |
+| [`report/L7_live_session.txt`](report/L7_live_session.txt) | Raw terminal transcript behind the live capture (evidence) |
 | [`report/arkx-level-7-report.html`](report/arkx-level-7-report.html), `.pdf` | Standalone report for the MCP level |
-| [`report/tools/`](report/tools/) | Scripts used to build the reports and reproduce individual steps |
-| [`posts/medium_post.md`](posts/medium_post.md) | Long-form article version |
-| [`posts/linkedin_post.md`](posts/linkedin_post.md) | Short social version |
+| [`report/img/`](report/img/) | Screenshots: solved screen, takeaways, agent interaction, flag accepted — per level |
 
 ![ARKX CTF level solved screen showing the flag accepted](report/img/04_flag_accepted.png)
 
@@ -88,4 +86,11 @@ AI agent security · LLM security · Model Context Protocol (MCP) security · pr
 
 ## Not in this repository
 
-The working directory used during the engagement (`.work/`) is deliberately excluded: it holds live session cookies (`idToken`, `accessToken`, `refreshToken`, `sessionId`) for the CTF account, plus transient transcripts and scratch scripts. The flags quoted throughout are the values their containers issued and are not reusable.
+Only the writeups are published here. Everything else was kept back deliberately:
+
+- **Engagement working directory** (`.work/`) — live session cookies (`idToken`, `accessToken`, `refreshToken`, `sessionId`) for the CTF account, plus transient transcripts and scratch scripts.
+- **Build tooling** — the Node/Playwright scripts that rendered the PDFs, drove the headless browser and proxied the level UI, and the exploit helper shell script. They embed environment-specific paths and are not needed to follow the writeup.
+- **Article drafts** — the long-form and short social versions of this writeup.
+- **Editable report source** — the `.docx` from which the vulnerability-report PDF was generated.
+
+The flags quoted throughout are the values their containers issued and are not reusable.
