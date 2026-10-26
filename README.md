@@ -76,9 +76,9 @@ The set is not really about jailbreaking a model. The winning move was almost al
 
 ## Full writeup
 
-The running writeup, with a Mechanism / Exploit / Root-cause breakdown for all 27 levels, lives in Notion:
+The running writeup, with a Mechanism / Exploit / Root-cause breakdown for all 27 levels, is published on the web (no account needed):
 
-**https://app.notion.com/p/AI-Agent-and-MCP-Security-Assessment-ARKX-CTF-Writeup-3faa6975670c807fb8ede0d7b7a7b03c**
+**https://proud-loganberry-61a.notion.site/AI-Agent-and-MCP-Security-Assessment-ARKX-CTF-Writeup-3faa6975670c807fb8ede0d7b7a7b03c**
 
 ## Topics covered
 
